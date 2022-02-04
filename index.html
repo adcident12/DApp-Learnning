@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/x-icon" href="./images/favicon.ico">
+    <link rel="stylesheet" href="./css/bootstrap.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Itim&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="./css/rottery.css">
+    <style>
+        body {
+            font-family: 'Itim', cursive;
+        }
+        .disable-event {
+            pointer-events: none;
+            opacity: .65;
+        }
+        .buy,.sell {
+            color: blue;
+            text-decoration: underline;
+            cursor: pointer;
+        }
+        .swal2-validation-message {
+            word-break: break-word;
+        }
+    </style>
+    <script src="./js/jquery-3.6.0.min.js"></script>
+    <script src="./js/popper.min.js"></script>
+    <script src="./js/bootstrap.min.js"></script>
+    <script src="./js/sweetalert2.all.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/2.1.2/TweenMax.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/web3/1.6.1/web3.min.js" integrity="sha512-5erpERW8MxcHDF7Xea9eBQPiRtxbse70pFcaHJuOhdEBQeAxGQjUwgJbuBDWve+xP/u5IoJbKjyJk50qCnMD7A==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <title>DApp Desposit & Witdraw & Sell & Buy & Create Token & mini game</title>
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <a class="navbar-brand" href="#">
+            <img style="background-color: rgb(20, 27, 47, 0.9);border-radius: 5px;" src="./images/Ethereum-Icon-Purple-Dark-Logo.wine.svg" width="35" height="35" alt="eth">
+        </a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav mr-auto">
+                <li class="nav-item">
+                    <a class="nav-link" target="_blank" href="https://faucets.chain.link/rinkeby">ขอเหรียญทดสอบ</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" target="_blank" href="https://github.com/adcident12/DApp-Demo-Create-Token-Sell-Buy-Desposit-Witdraw">โค้ด</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" target="_blank" href="https://remix.ethereum.org/">Remix ethereum IDE</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" target="_blank" href="https://codepen.io/Profesor08/pen/ZPXyKQ">Ref.mini game from</a>
+                </li>
+            </ul>
+            <form class="form-inline my-2 my-lg-0">
+                <div id="addressButton" class="btn btn-primary mr-2 d-none">
+                    <span class="mr-1" id="userAddress"></span><span id="metamaskBlanceEth" class="badge badge-light">0</span>
+                </div>
+                <div id="loginButton" class="btn btn-outline-success my-2 my-sm-0 d-none" onclick="loginWithMetamask()">Login</div>
+                <div id="logoutButton" class="btn btn-outline-success my-2 my-sm-0 d-none" onclick="logout()">Logout</div>
+            </form>
+        </div>
+    </nav>
+    <div class="container-fluid mt-3">
+        <div id="showChain" class="alert alert-primary d-none" role="alert">
+            <span id="chain-name"></span>
+        </div>
+        <div id="showToken" class="alert alert-primary d-none" role="alert">
+            <span id="token-name"></span>
+        </div>
+        <div id="showMetamask" class="alert alert-danger d-none" role="alert">
+            MetaMask is not installed! <a target="blank" href="https://metamask.io/">Link</a>
+        </div>
+        <div id="user-detail"></div>
+        <div class="card mt-2">
+            <div class="card-header">
+                <span class="mr-2">Balance <span id="balance-contract" class="badge badge-primary">0</span></span>
+                <span class="mr-2">Fee <span id="fee-contract" class="badge badge-info">0</span></span>
+                <span class="mr-2">Total amount less fees <span id="less-fees-contract" class="badge badge-success">0</span></span>
+                <span>Balance AKT <span id="balance-token" class="badge badge-secondary">0</span></span>
+            </div>
+            <div class="card-body">
+                <script type="text/javascript" src="https://files.coinmarketcap.com/static/widget/coinMarquee.js"></script>
+                <div class="row">
+                    <div class="col-12 mb-3">
+                        <div id="coinmarketcap-widget-marquee" coins="1027,825,3408" currency="THB" theme="light" transparent="false" show-symbol-logo="true"></div>
+                    </div>
+                    <div class="col-12">
+                        <table class="table">
+                            <thead class="thead-dark">
+                                <tr>
+                                    <th scope="col">Address</th>
+                                    <th scope="col">Amount</th>
+                                </tr>
+                            </thead>
+                            <tbody id="render-table"></tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="./js/action.js"></script>
+</body>
+</html>
