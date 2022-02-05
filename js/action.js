@@ -134,107 +134,109 @@ async function getDataAccount() {
 }
 
 async function getDataUser() {
-    const ABI = await $.getJSON("./contracts/Simple.json");
-    const contract = new web3.eth.Contract(
-        ABI,
-        CONTRACT_ADDRESS
-    );
-    const ABI_TOKEN = await $.getJSON("./contracts/TokenCoin.json");
-    const contract_token = new web3.eth.Contract(
-        ABI_TOKEN,
-        CONTRACT_ADDRESS_TOKEN
-    );
-
-    const amount_token = await contract_token.methods.balanceOf(userAddress).call({ from: CONTRACT_ADDRESS_TOKEN });
-
-    const amount = await contract.methods.getAmountSelf().call({ from: userAddress });
-    const owner = await contract.methods.getOwnerContranct().call({ from: userAddress });
-    const account = await web3.eth.getAccounts();
-    const fee = await contract.methods.getfeeContranct().call({ from: userAddress });
-    const blocknumber = await web3.eth.getBlockNumber();
-    const transaction = await web3.eth.getTransactionFromBlock(blocknumber, 0);
-    const chainId = await web3.eth.getChainId();
-    var script = document.createElement('script');
-    script.src = "https://files.coinmarketcap.com/static/widget/currency.js";
-    document.getElementById('user-detail').appendChild(script);
-    let _html = '';
-    _html += '<div id="user-detail" class="card">';
-        _html += '<div class="card-header">เครื่องมือ</div>';
-        _html += '<div class="card-body">';
-            _html += '<div class="row">';
-                _html += '<div class="col-12 col-sm-6 col-md-3 mb-3">';
-                    _html += '<ul class="list-group">';
-                        if (owner != account[0]) {
-                            _html += '<li class="list-group-item">ยอดที่ฝาก '+web3.utils.fromWei(amount, 'ether')+' ETH <br/><span onclick="getFee()" class="get-fee">รับดอกเบี้ย<span><span class="badge badge-primary ml-2">AKT</span></li>';
-                        } else {
-                            _html += '<li class="list-group-item">ยอดที่ถอดได้ '+web3.utils.fromWei(fee, 'ether')+' ETH</li>';
-                        }
-                        if (owner != account[0]) {
-                            _html += '<li class="list-group-item">AKT '+amount_token+' <br/><span class="buy mr-2" onclick="buyToken()">ซื้อ</span> <span class="sell" onclick="sellToken()">ขาย</span></li>';
-                        }
-                        _html += '<li class="list-group-item">เลข Chain '+chainId+'</li>';
-                        _html += '<li class="list-group-item">เลข Block '+transaction.blockNumber+'</li>';
-                        _html += '<li class="list-group-item">ที่อยู่กระเป๋า <a target="_blank" href="https://rinkeby.etherscan.io/address/'+account[0]+'">'+ account[0]+'</a></li>';
-                    _html += '</ul>';
-                _html += '</div>';
-                _html += '<div class="col-12 col-sm-12 col-md-6">';
-                    _html += '<div class="row">';
-                        if (owner != account[0]) {
-                        _html += '<div class="col-12 col-sm-12 col-md-6">';
-                            _html += '<div class="form-group">';
-                                _html += '<label for="deposit">การฝาก <span class="badge badge-dark">ETH</span></label>';
-                                _html += '<select class="form-control" id="deposit">';
-                                    _html += '<option value="2">2 ETH</option>';
-                                    _html += '<option value="3">3 ETH</option>';
-                                    _html += '<option value="4">4 ETH</option>';
-                                    _html += '<option value="5">5 ETH</option>';
-                                _html += '</select>';
-                                _html += '<div onclick="desposit(this)" class="btn btn-warning mt-2">ยืนยันการฝาก</div>';
-                            _html += '</div>';
-                        _html += '</div>';
-                        }
-                        _html += '<div class="col-12 col-sm-12 col-md-6">';
-                            _html += '<div class="form-group">';
-                                _html += '<label for="witdraw">การถอด</label>';
-                                _html += '<input type="text" class="form-control" id="witdraw" onkeypress="return onlyNumberKey(event)" placeholder="amount">';
-                                _html += '<div onclick="witdraw(this)" class="btn btn-danger mt-2">ยืนยันการถอด</div>';
-                            _html += '</div>';
-                        _html += '</div>';
-                        if (owner != account[0]) {
-                        _html += '<div class="col-12 col-sm-12 col-md-12 box-rottery">';
-                            _html += '<div class="wheel" data-wheel="data-wheel">';
-                                _html += '<div class="start-button" data-wheel-button="data-wheel-button">';
-                                    _html += '<div class="btn-text">Start</div>';
-                                _html += '</div>';
-                                _html += '<div class="wheel-inner" data-wheel-inner="data-wheel-inner">';
-                                    _html += '<div class="image" data-wheel-image="data-wheel-image"><span class="reward">1000000000M</span></div>';
-                                    _html += '<div class="image" data-wheel-image="data-wheel-image"><span class="reward">500000000M</span></div>';
-                                    _html += '<div class="image" data-wheel-image="data-wheel-image"><span class="reward">250000000M</span></div>';
-                                    _html += '<div class="image" data-wheel-image="data-wheel-image"><span class="reward">125000000M</span></div>';
-                                    _html += '<div class="image" data-wheel-image="data-wheel-image"><span class="reward">62500000M<span></div>';
-                                    _html += '<div class="image" data-wheel-image="data-wheel-image"><span class="reward">31250000M</span></div>';
-                                    _html += '<div class="image" data-wheel-image="data-wheel-image"><span class="reward">15625000M</span></div>';
-                                    _html += '<div class="image" data-wheel-image="data-wheel-image"><span class="reward">7812500M</span></div>';
-                                    _html += '<div class="image" data-wheel-image="data-wheel-image"><span class="reward">3906250M</span></div>';
-                                    _html += '<div class="image" data-wheel-image="data-wheel-image"><span class="reward">0<span></div>';
-                                _html += '</div>';
-                            _html += '</div>';
-                            _html += '<div class="bar-bottom badge badge-warning">เสีย AKT ครั้งละ 3906250000000 ต่อการหมุน</div>';
-                        _html += '</div>';
-                        }
+    if (userAddress != null) {
+        const ABI = await $.getJSON("./contracts/Simple.json");
+        const contract = new web3.eth.Contract(
+            ABI,
+            CONTRACT_ADDRESS
+        );
+        const ABI_TOKEN = await $.getJSON("./contracts/TokenCoin.json");
+        const contract_token = new web3.eth.Contract(
+            ABI_TOKEN,
+            CONTRACT_ADDRESS_TOKEN
+        );
+    
+        const amount_token = await contract_token.methods.balanceOf(userAddress).call({ from: CONTRACT_ADDRESS_TOKEN });
+    
+        const amount = await contract.methods.getAmountSelf().call({ from: userAddress });
+        const owner = await contract.methods.getOwnerContranct().call({ from: userAddress });
+        const account = await web3.eth.getAccounts();
+        const fee = await contract.methods.getfeeContranct().call({ from: userAddress });
+        const blocknumber = await web3.eth.getBlockNumber();
+        const transaction = await web3.eth.getTransactionFromBlock(blocknumber, 0);
+        const chainId = await web3.eth.getChainId();
+        var script = document.createElement('script');
+        script.src = "https://files.coinmarketcap.com/static/widget/currency.js";
+        document.getElementById('user-detail').appendChild(script);
+        let _html = '';
+        _html += '<div id="user-detail" class="card">';
+            _html += '<div class="card-header">เครื่องมือ</div>';
+            _html += '<div class="card-body">';
+                _html += '<div class="row">';
+                    _html += '<div class="col-12 col-sm-6 col-md-3 mb-3">';
+                        _html += '<ul class="list-group">';
+                            if (owner != account[0]) {
+                                _html += '<li class="list-group-item">ยอดที่ฝาก '+web3.utils.fromWei(amount, 'ether')+' ETH <br/><span onclick="getFee()" class="get-fee">รับดอกเบี้ย<span><span class="badge badge-primary ml-2">AKT</span></li>';
+                            } else {
+                                _html += '<li class="list-group-item">ยอดที่ถอดได้ '+web3.utils.fromWei(fee, 'ether')+' ETH</li>';
+                            }
+                            if (owner != account[0]) {
+                                _html += '<li class="list-group-item">AKT '+amount_token+' <br/><span class="buy mr-2" onclick="buyToken()">ซื้อ</span> <span class="sell" onclick="sellToken()">ขาย</span></li>';
+                            }
+                            _html += '<li class="list-group-item">เลข Chain '+chainId+'</li>';
+                            _html += '<li class="list-group-item">เลข Block '+transaction.blockNumber+'</li>';
+                            _html += '<li class="list-group-item">ที่อยู่กระเป๋า <a target="_blank" href="https://rinkeby.etherscan.io/address/'+account[0]+'">'+ account[0]+'</a></li>';
+                        _html += '</ul>';
                     _html += '</div>';
-                _html += '</div>';
-                _html += '<div class="col-12 col-sm-12 col-md-3">';
-                    _html += '<div class="coinmarketcap-currency-widget" data-currencyid="1027" data-base="THB" data-secondary="" data-ticker="true" data-rank="true" data-marketcap="true" data-volume="true" data-statsticker="true" data-stats="USD"></div>';
+                    _html += '<div class="col-12 col-sm-12 col-md-6">';
+                        _html += '<div class="row">';
+                            if (owner != account[0]) {
+                            _html += '<div class="col-12 col-sm-12 col-md-6">';
+                                _html += '<div class="form-group">';
+                                    _html += '<label for="deposit">การฝาก <span class="badge badge-dark">ETH</span></label>';
+                                    _html += '<select class="form-control" id="deposit">';
+                                        _html += '<option value="2">2 ETH</option>';
+                                        _html += '<option value="3">3 ETH</option>';
+                                        _html += '<option value="4">4 ETH</option>';
+                                        _html += '<option value="5">5 ETH</option>';
+                                    _html += '</select>';
+                                    _html += '<div onclick="desposit(this)" class="btn btn-warning mt-2">ยืนยันการฝาก</div>';
+                                _html += '</div>';
+                            _html += '</div>';
+                            }
+                            _html += '<div class="col-12 col-sm-12 col-md-6">';
+                                _html += '<div class="form-group">';
+                                    _html += '<label for="witdraw">การถอด</label>';
+                                    _html += '<input type="text" class="form-control" id="witdraw" onkeypress="return onlyNumberKey(event)" placeholder="amount">';
+                                    _html += '<div onclick="witdraw(this)" class="btn btn-danger mt-2">ยืนยันการถอด</div>';
+                                _html += '</div>';
+                            _html += '</div>';
+                            if (owner != account[0]) {
+                            _html += '<div class="col-12 col-sm-12 col-md-12 box-rottery">';
+                                _html += '<div class="wheel" data-wheel="data-wheel">';
+                                    _html += '<div class="start-button" data-wheel-button="data-wheel-button">';
+                                        _html += '<div class="btn-text">Start</div>';
+                                    _html += '</div>';
+                                    _html += '<div class="wheel-inner" data-wheel-inner="data-wheel-inner">';
+                                        _html += '<div class="image" data-wheel-image="data-wheel-image"><span class="reward">1000000000M</span></div>';
+                                        _html += '<div class="image" data-wheel-image="data-wheel-image"><span class="reward">500000000M</span></div>';
+                                        _html += '<div class="image" data-wheel-image="data-wheel-image"><span class="reward">250000000M</span></div>';
+                                        _html += '<div class="image" data-wheel-image="data-wheel-image"><span class="reward">125000000M</span></div>';
+                                        _html += '<div class="image" data-wheel-image="data-wheel-image"><span class="reward">62500000M<span></div>';
+                                        _html += '<div class="image" data-wheel-image="data-wheel-image"><span class="reward">31250000M</span></div>';
+                                        _html += '<div class="image" data-wheel-image="data-wheel-image"><span class="reward">15625000M</span></div>';
+                                        _html += '<div class="image" data-wheel-image="data-wheel-image"><span class="reward">7812500M</span></div>';
+                                        _html += '<div class="image" data-wheel-image="data-wheel-image"><span class="reward">3906250M</span></div>';
+                                        _html += '<div class="image" data-wheel-image="data-wheel-image"><span class="reward">0<span></div>';
+                                    _html += '</div>';
+                                _html += '</div>';
+                                _html += '<div class="bar-bottom badge badge-warning">เสีย AKT ครั้งละ 3906250000000 ต่อการหมุน</div>';
+                            _html += '</div>';
+                            }
+                        _html += '</div>';
+                    _html += '</div>';
+                    _html += '<div class="col-12 col-sm-12 col-md-3">';
+                        _html += '<div class="coinmarketcap-currency-widget" data-currencyid="1027" data-base="THB" data-secondary="" data-ticker="true" data-rank="true" data-marketcap="true" data-volume="true" data-statsticker="true" data-stats="USD"></div>';
+                    _html += '</div>';
                 _html += '</div>';
             _html += '</div>';
         _html += '</div>';
-    _html += '</div>';
-
-    if (userAddress != null) {
-        document.getElementById("user-detail").innerHTML = _html;
-        if (owner != account[0]) {
-            const wheel = new FortuneWheel(`[data-wheel]`, 10);
+    
+        if (userAddress != null) {
+            document.getElementById("user-detail").innerHTML = _html;
+            if (owner != account[0]) {
+                const wheel = new FortuneWheel(`[data-wheel]`, 10);
+            }
         }
     } else {
         document.getElementById("user-detail").innerHTML = "";
