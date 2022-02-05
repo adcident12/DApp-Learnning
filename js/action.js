@@ -169,7 +169,9 @@ async function getDataUser() {
                         } else {
                             _html += '<li class="list-group-item">ยอดที่ถอดได้ '+web3.utils.fromWei(fee, 'ether')+' ETH</li>';
                         }
-                        _html += '<li class="list-group-item">AKT '+amount_token+' <br/><span class="buy mr-2" onclick="buyToken()">ซื้อ</span> <span class="sell" onclick="sellToken()">ขาย</span></li>';
+                        if (owner != account[0]) {
+                            _html += '<li class="list-group-item">AKT '+amount_token+' <br/><span class="buy mr-2" onclick="buyToken()">ซื้อ</span> <span class="sell" onclick="sellToken()">ขาย</span></li>';
+                        }
                         _html += '<li class="list-group-item">เลข Chain '+chainId+'</li>';
                         _html += '<li class="list-group-item">เลข Block '+transaction.blockNumber+'</li>';
                         _html += '<li class="list-group-item">ที่อยู่กระเป๋า <a target="_blank" href="https://rinkeby.etherscan.io/address/'+account[0]+'">'+ account[0]+'</a></li>';
