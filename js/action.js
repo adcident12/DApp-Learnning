@@ -159,20 +159,20 @@ async function getDataUser() {
     document.getElementById('user-detail').appendChild(script);
     let _html = '';
     _html += '<div id="user-detail" class="card">';
-        _html += '<div class="card-header">Featured</div>';
+        _html += '<div class="card-header">เครื่องมือ</div>';
         _html += '<div class="card-body">';
             _html += '<div class="row">';
                 _html += '<div class="col-12 col-sm-6 col-md-3 mb-3">';
                     _html += '<ul class="list-group">';
                         if (owner != account[0]) {
-                            _html += '<li class="list-group-item">Amount '+web3.utils.fromWei(amount, 'ether')+' ETH</li>';
+                            _html += '<li class="list-group-item">ยอดที่ฝาก '+web3.utils.fromWei(amount, 'ether')+' ETH</li>';
                         } else {
-                            _html += '<li class="list-group-item">Fee '+web3.utils.fromWei(fee, 'ether')+' ETH</li>';
+                            _html += '<li class="list-group-item">ยอดที่ถอดได้ '+web3.utils.fromWei(fee, 'ether')+' ETH</li>';
                         }
-                        _html += '<li class="list-group-item">AKT '+amount_token+' <br/><span class="buy mr-2" onclick="buyToken()">Buy</span> <span class="sell" onclick="sellToken()">Sell</span></li>';
-                        _html += '<li class="list-group-item">ChainId '+chainId+'</li>';
-                        _html += '<li class="list-group-item">BlockNumber '+transaction.blockNumber+'</li>';
-                        _html += '<li class="list-group-item">Address <a target="_blank" href="https://rinkeby.etherscan.io/address/'+account[0]+'">'+ account[0]+'</a></li>';
+                        _html += '<li class="list-group-item">AKT '+amount_token+' <br/><span class="buy mr-2" onclick="buyToken()">ซื้อ</span> <span class="sell" onclick="sellToken()">ขาย</span></li>';
+                        _html += '<li class="list-group-item">เลข Chain '+chainId+'</li>';
+                        _html += '<li class="list-group-item">เลข Block '+transaction.blockNumber+'</li>';
+                        _html += '<li class="list-group-item">ที่อยู่กระเป๋า <a target="_blank" href="https://rinkeby.etherscan.io/address/'+account[0]+'">'+ account[0]+'</a></li>';
                     _html += '</ul>';
                 _html += '</div>';
                 _html += '<div class="col-12 col-sm-12 col-md-6">';
@@ -180,22 +180,22 @@ async function getDataUser() {
                         if (owner != account[0]) {
                         _html += '<div class="col-12 col-sm-12 col-md-6">';
                             _html += '<div class="form-group">';
-                                _html += '<label for="deposit">Deposit <span class="badge badge-dark">ETH</span></label>';
+                                _html += '<label for="deposit">การฝาก <span class="badge badge-dark">ETH</span></label>';
                                 _html += '<select class="form-control" id="deposit">';
                                     _html += '<option value="2">2 ETH</option>';
                                     _html += '<option value="3">3 ETH</option>';
                                     _html += '<option value="4">4 ETH</option>';
                                     _html += '<option value="5">5 ETH</option>';
                                 _html += '</select>';
-                                _html += '<div onclick="desposit(this)" class="btn btn-warning mt-2">Deposit</div>';
+                                _html += '<div onclick="desposit(this)" class="btn btn-warning mt-2">ยืนยันการฝาก</div>';
                             _html += '</div>';
                         _html += '</div>';
                         }
                         _html += '<div class="col-12 col-sm-12 col-md-6">';
                             _html += '<div class="form-group">';
-                                _html += '<label for="witdraw">Witdraw</label>';
+                                _html += '<label for="witdraw">การถอด</label>';
                                 _html += '<input type="text" class="form-control" id="witdraw" onkeypress="return onlyNumberKey(event)" placeholder="amount">';
-                                _html += '<div onclick="witdraw(this)" class="btn btn-danger mt-2">Witdraw</div>';
+                                _html += '<div onclick="witdraw(this)" class="btn btn-danger mt-2">ยืนยันการถอด</div>';
                             _html += '</div>';
                         _html += '</div>';
                         if (owner != account[0]) {
@@ -251,8 +251,8 @@ async function desposit(elm) {
         if (rs.status) {
             Swal.fire({
                 icon: 'success',
-                title: 'Good job!',
-                text: 'success',
+                title: 'ยินดีด้วย!',
+                text: 'สำเร็จ',
             }).then((result) => {
                 getDataUser();
                 getDataAccount();
@@ -266,7 +266,7 @@ async function desposit(elm) {
         console.log(error);
         Swal.fire({
             icon: 'error',
-            title: 'Oops...',
+            title: 'ผิดพลาด',
             text: error.message,
         });
         elm.classList.remove("disable-event");
@@ -287,8 +287,8 @@ async function witdraw(elm) {
             if (rs.status) {
                 Swal.fire({
                     icon: 'success',
-                    title: 'Good job!',
-                    text: 'success',
+                    title: 'ยินดีด้วย!',
+                    text: 'สำเร็จ',
                 }).then((result) => {
                     getDataUser();
                     getDataAccount();
@@ -302,7 +302,7 @@ async function witdraw(elm) {
             console.log(error);
             Swal.fire({
                 icon: 'error',
-                title: 'Oops...',
+                title: 'ผิดพลาด',
                 text: error.message,
             });
             elm.classList.remove("disable-event");
@@ -310,8 +310,8 @@ async function witdraw(elm) {
     } else {
         Swal.fire({
             icon: 'error',
-            title: 'Oops...',
-            text: 'Please specify an amount greater than zero.!',
+            title: 'ผิดพลาด',
+            text: 'โปรดระบุจำนวนเงินที่มากกว่าศูนย์!',
         });
         elm.classList.remove("disable-event");
     }
@@ -320,14 +320,15 @@ async function witdraw(elm) {
 async function buyToken() {
     const ABI = await $.getJSON("./contracts/Simple.json");
     Swal.fire({
-        title: 'Submit your ETH <div>(จำเป็นต้องฝาก ETH ก่อนซื้อ)</div>',
+        title: 'กรอก ETH ของคุณ<div>(จำเป็นต้องฝาก ETH ก่อนซื้อ)</div>',
         input: 'text',
         inputAttributes: {
             autocapitalize: 'off',
             onkeypress: 'return onlyNumberKey(event, this)'
         },
         showCancelButton: true,
-        confirmButtonText: 'Buy',
+        confirmButtonText: 'ซื้อ',
+        cancelButtonText: 'ยกเลิก',
         showLoaderOnConfirm: true,
         preConfirm: (amount) => {
             const contract = new web3.eth.Contract(
@@ -335,7 +336,7 @@ async function buyToken() {
                 CONTRACT_ADDRESS
             );
             if (amount <= 0) {
-                Swal.showValidationMessage('Please specify an amount greater than zero.');
+                Swal.showValidationMessage('โปรดระบุจำนวนเงินที่มากกว่าศูนย์!');
             } else {
                 return contract.methods.buy().send({ from: userAddress, gas: 3000000, value: web3.utils.toWei(amount, "ether")}).then(response => {
                     console.log(response.message);
@@ -360,8 +361,8 @@ async function buyToken() {
             getFeeContract();
             getBalanceMetamask();
             Swal.fire(
-                'Good job!',
-                'You clicked the button!',
+                'ยินดีด้วย!',
+                'คลิกที่ปุ่ม!',
                 'success'
             );
         }
@@ -372,14 +373,15 @@ async function sellToken() {
     const ABI = await $.getJSON("./contracts/Simple.json");
     const ABI_TOKEN = await $.getJSON("./contracts/TokenCoin.json");
     Swal.fire({
-        title: 'Submit your AKT <div>(ครั้งละไม่เกิน 1000000000000000)</div>',
+        title: 'กรอก AKT ของคุณ<div>(ครั้งละไม่เกิน 1000000000000000)</div>',
         input: 'text',
         inputAttributes: {
             autocapitalize: 'off',
             onkeypress: 'return onlyNumberKey(event, this)'
         },
         showCancelButton: true,
-        confirmButtonText: 'Sell',
+        confirmButtonText: 'ขาย',
+        cancelButtonText: 'ยกเลิก',
         showLoaderOnConfirm: true,
         preConfirm: (amount) => {
             const contract = new web3.eth.Contract(
@@ -414,7 +416,7 @@ async function sellToken() {
                     );
                 });
             } else {
-                Swal.showValidationMessage('From 1 to 1000000000000000');
+                Swal.showValidationMessage('ใส่จำนวน 1 ถึง 1000000000000000000');
             }
         },
         allowOutsideClick: () => !Swal.isLoading()
@@ -426,8 +428,8 @@ async function sellToken() {
             getFeeContract();
             getBalanceMetamask();
             Swal.fire(
-                'Good job!',
-                'You clicked the button!',
+                'ยินดีด้วย!',
+                'คลิกที่ปุ่ม!',
                 'success'
             );
         }
@@ -520,12 +522,12 @@ class FortuneWheel {
                         if (response.message) {
                             document.querySelector("body").classList.remove("disable-event");
                             Swal.fire({
-                                title: 'Oops...',
-                                text: "Something went wrong!",
+                                title: 'ผิดพลาด',
+                                text: "อะไรบางอย่างผิดปกติ!",
                                 icon: 'error',
                                 showCancelButton: false,
                                 confirmButtonColor: '#3085d6',
-                                confirmButtonText: 'Reload'
+                                confirmButtonText: 'โหลดใหม่'
                             }).then((result) => {
                                 if (result.isConfirmed) {
                                     location.reload();
@@ -537,12 +539,12 @@ class FortuneWheel {
                                 if (response.message) {
                                     document.querySelector("body").classList.remove("disable-event");
                                     Swal.fire({
-                                        title: 'Oops...',
-                                        text: "Something went wrong!",
+                                        title: 'ผิดพลาด',
+                                        text: "อะไรบางอย่างผิดปกติ!",
                                         icon: 'error',
                                         showCancelButton: false,
                                         confirmButtonColor: '#3085d6',
-                                        confirmButtonText: 'Reload'
+                                        confirmButtonText: 'โหลดใหม่'
                                     }).then((result) => {
                                         if (result.isConfirmed) {
                                             location.reload();
@@ -558,12 +560,12 @@ class FortuneWheel {
                             }).catch(error => {
                                 document.querySelector("body").classList.remove("disable-event");
                                 Swal.fire({
-                                    title: 'Oops...',
-                                    text: "Something went wrong!",
+                                    title: 'ผิดพลาด',
+                                    text: "อะไรบางอย่างผิดปกติ!",
                                     icon: 'error',
                                     showCancelButton: false,
                                     confirmButtonColor: '#3085d6',
-                                    confirmButtonText: 'Reload'
+                                    confirmButtonText: 'โหลดใหม่'
                                 }).then((result) => {
                                     if (result.isConfirmed) {
                                         location.reload();
@@ -574,12 +576,12 @@ class FortuneWheel {
                     }).catch(error => {
                         document.querySelector("body").classList.remove("disable-event");
                         Swal.fire({
-                            title: 'Oops...',
-                            text: "Something went wrong!",
+                            title: 'ผิดพลาด',
+                            text: "อะไรบางอย่างผิดปกติ!",
                             icon: 'error',
                             showCancelButton: false,
                             confirmButtonColor: '#3085d6',
-                            confirmButtonText: 'Reload'
+                            confirmButtonText: 'โหลดใหม่'
                         }).then((result) => {
                             if (result.isConfirmed) {
                                 location.reload();
@@ -590,19 +592,19 @@ class FortuneWheel {
                     document.querySelector("body").classList.remove("disable-event");
                     Swal.fire({
                         icon: 'error',
-                        title: 'Oops...',
-                        text: "Just buy AKT for play",
+                        title: 'ผิดพลาด',
+                        text: "ซื้อ AKT เพื่อเล่น",
                     });
                 }
             }).catch(error => {
                 document.querySelector("body").classList.remove("disable-event");
                 Swal.fire({
-                    title: 'Oops...',
-                    text: "Something went wrong!",
+                    title: 'ผิดพลาด',
+                    text: "อะไรบางอย่างผิดปกติ!",
                     icon: 'error',
                     showCancelButton: false,
                     confirmButtonColor: '#3085d6',
-                    confirmButtonText: 'Reload'
+                    confirmButtonText: 'โหลดใหม่'
                 }).then((result) => {
                     if (result.isConfirmed) {
                         location.reload();
@@ -648,12 +650,12 @@ class FortuneWheel {
                 let reward = parseInt(this._images[id].getAttribute('data-reward'));
                 document.querySelector("body").classList.remove("disable-event");
                 Swal.fire({
-                    title: 'Good job!',
-                    text: 'Dont Reject for Get '+ parseInt(this._images[id].getAttribute('data-reward')) +' reward',
+                    title: 'ยินดีด้วย!',
+                    text: 'กด confirm กระเป๋า เพื่อรับ '+ parseInt(this._images[id].getAttribute('data-reward')) +' เหรียญ',
                     icon: 'success',
                     showCancelButton: false,
                     confirmButtonColor: '#3085d6',
-                    confirmButtonText: 'OK'
+                    confirmButtonText: 'ตกลง'
                 }).then((result) => {
                     if (result.isConfirmed) {
                         document.querySelector("body").classList.add("disable-event");
@@ -667,12 +669,12 @@ class FortuneWheel {
                                 if (response.message) {
                                     document.querySelector("body").classList.remove("disable-event");
                                     Swal.fire({
-                                        title: 'Oops...',
-                                        text: "Something went wrong!",
+                                        title: 'ผิดพลาด',
+                                        text: "อะไรบางอย่างผิดปกติ!",
                                         icon: 'error',
                                         showCancelButton: false,
                                         confirmButtonColor: '#3085d6',
-                                        confirmButtonText: 'Reload'
+                                        confirmButtonText: 'โหลดใหม่'
                                     }).then((result) => {
                                         if (result.isConfirmed) {
                                             location.reload();
@@ -689,12 +691,12 @@ class FortuneWheel {
                             }).catch(error => {
                                 document.querySelector("body").classList.remove("disable-event");
                                 Swal.fire({
-                                    title: 'Oops...',
-                                    text: "Something went wrong!",
+                                    title: 'ผิดพลาด',
+                                    text: "อะไรบางอย่างผิดปกติ!",
                                     icon: 'error',
                                     showCancelButton: false,
                                     confirmButtonColor: '#3085d6',
-                                    confirmButtonText: 'Reload'
+                                    confirmButtonText: 'โหลดใหม่'
                                 }).then((result) => {
                                     if (result.isConfirmed) {
                                         location.reload();
@@ -707,12 +709,12 @@ class FortuneWheel {
             } else {
                 document.querySelector("body").classList.remove("disable-event");
                 Swal.fire({
-                    title: 'Good job!',
-                    text: "Sorry 0 reward",
+                    title: 'ยินดีด้วย!',
+                    text: "รับ 0 เหรียญ",
                     icon: 'success',
                     showCancelButton: false,
                     confirmButtonColor: '#3085d6',
-                    confirmButtonText: 'Reload'
+                    confirmButtonText: 'โหลดใหม่'
                 }).then((result) => {
                     if (result.isConfirmed) {
                         location.reload();
