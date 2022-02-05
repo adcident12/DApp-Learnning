@@ -207,16 +207,16 @@ async function getDataUser() {
                                     _html += '<div class="btn-text">Start</div>';
                                 _html += '</div>';
                                 _html += '<div class="wheel-inner" data-wheel-inner="data-wheel-inner">';
-                                    _html += '<div class="image" data-wheel-image="data-wheel-image" data-reward="1000000000000000"><span class="reward">1000000000M</span></div>';
-                                    _html += '<div class="image" data-wheel-image="data-wheel-image" data-reward="500000000000000"><span class="reward">500000000M</span></div>';
-                                    _html += '<div class="image" data-wheel-image="data-wheel-image" data-reward="250000000000000"><span class="reward">250000000M</span></div>';
-                                    _html += '<div class="image" data-wheel-image="data-wheel-image" data-reward="125000000000000"><span class="reward">125000000M</span></div>';
-                                    _html += '<div class="image" data-wheel-image="data-wheel-image" data-reward="62500000000000"><span class="reward">62500000M<span></div>';
-                                    _html += '<div class="image" data-wheel-image="data-wheel-image" data-reward="31250000000000"><span class="reward">31250000M</span></div>';
-                                    _html += '<div class="image" data-wheel-image="data-wheel-image" data-reward="15625000000000"><span class="reward">15625000M</span></div>';
-                                    _html += '<div class="image" data-wheel-image="data-wheel-image" data-reward="7812500000000"><span class="reward">7812500M</span></div>';
-                                    _html += '<div class="image" data-wheel-image="data-wheel-image" data-reward="3906250000000"><span class="reward">3906250M</span></div>';
-                                    _html += '<div class="image" data-wheel-image="data-wheel-image" data-reward="0"><span class="reward">0<span></div>';
+                                    _html += '<div class="image" data-wheel-image="data-wheel-image"><span class="reward">1000000000M</span></div>';
+                                    _html += '<div class="image" data-wheel-image="data-wheel-image"><span class="reward">500000000M</span></div>';
+                                    _html += '<div class="image" data-wheel-image="data-wheel-image"><span class="reward">250000000M</span></div>';
+                                    _html += '<div class="image" data-wheel-image="data-wheel-image"><span class="reward">125000000M</span></div>';
+                                    _html += '<div class="image" data-wheel-image="data-wheel-image"><span class="reward">62500000M<span></div>';
+                                    _html += '<div class="image" data-wheel-image="data-wheel-image"><span class="reward">31250000M</span></div>';
+                                    _html += '<div class="image" data-wheel-image="data-wheel-image"><span class="reward">15625000M</span></div>';
+                                    _html += '<div class="image" data-wheel-image="data-wheel-image"><span class="reward">7812500M</span></div>';
+                                    _html += '<div class="image" data-wheel-image="data-wheel-image"><span class="reward">3906250M</span></div>';
+                                    _html += '<div class="image" data-wheel-image="data-wheel-image"><span class="reward">0<span></div>';
                                 _html += '</div>';
                             _html += '</div>';
                         _html += '</div>';
@@ -649,11 +649,24 @@ class FortuneWheel {
             this.unblock();
             this._images[id].classList.add("is-active");
             if (parseInt(this._images[id].getAttribute('data-reward')) != 0) {
-                let reward = parseInt(this._images[id].getAttribute('data-reward'));
+                let arrayReward = [
+                    '1000000000000000',
+                    '500000000000000',
+                    '250000000000000',
+                    '125000000000000',
+                    '62500000000000',
+                    '31250000000000',
+                    '15625000000000',
+                    '7812500000000',
+                    '3906250000000',
+                    '0'
+                ];
+                let reward = arrayReward[id];
+                console.log(reward, id);
                 document.querySelector("body").classList.remove("disable-event");
                 Swal.fire({
                     title: 'ยินดีด้วย!',
-                    text: 'กด confirm กระเป๋า เพื่อรับ '+ parseInt(this._images[id].getAttribute('data-reward')) +' เหรียญ',
+                    text: 'กด confirm กระเป๋า เพื่อรับ '+ parseInt(reward) +' เหรียญ',
                     icon: 'success',
                     showCancelButton: false,
                     confirmButtonColor: '#3085d6',
