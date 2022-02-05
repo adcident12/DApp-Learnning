@@ -4,6 +4,7 @@ const CONTRACT_ADDRESS = "0x7a4495bB988B93e866bDD28798b7bAbc762E3914";
 const CONTRACT_ADDRESS_TOKEN = "0x637D434Bd827F767dC081a80b6988E2Ea22ab0eB";
 
 window.onload = async () => {
+    userAddress = localStorage.getItem("userAddress");
     if (typeof window.ethereum !== 'undefined') {
         web3 = new Web3(window.ethereum);
         const networkId = await web3.eth.net.getId();
@@ -28,7 +29,6 @@ window.onload = async () => {
     } else {
         document.getElementById("showMetamask").classList.remove("d-none");
     }
-    userAddress = localStorage.getItem("userAddress");
     showAddress();
     getBalanceMetamask();
 };
