@@ -159,7 +159,7 @@ async function getDataUser() {
         script.src = "https://files.coinmarketcap.com/static/widget/currency.js";
         document.getElementById('user-detail').appendChild(script);
         let _html = '';
-        _html += '<div id="user-detail" class="card">';
+        _html += '<div class="card">';
             _html += '<div class="card-header">เครื่องมือ</div>';
             _html += '<div class="card-body">';
                 _html += '<div class="row">';
@@ -749,7 +749,7 @@ class FortuneWheel {
 function getFee() {
     Swal.fire(
         'รับดอกเบี้ยการฝาก?',
-        'Coming soon',
+        'อารมณ์มาทำต่อโปรดทราบ ไม่เร็วๆนี้แน่นอน!',
         'question'
     )
     return;
