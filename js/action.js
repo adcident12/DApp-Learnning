@@ -165,7 +165,7 @@ async function getDataUser() {
                 _html += '<div class="col-12 col-sm-6 col-md-3 mb-3">';
                     _html += '<ul class="list-group">';
                         if (owner != account[0]) {
-                            _html += '<li class="list-group-item">ยอดที่ฝาก '+web3.utils.fromWei(amount, 'ether')+' ETH</li>';
+                            _html += '<li class="list-group-item">ยอดที่ฝาก '+web3.utils.fromWei(amount, 'ether')+' ETH <br/><span onclick="getFee()" class="get-fee">รับดอกเบี้ย<span><span class="badge badge-primary ml-2">AKT</span></li>';
                         } else {
                             _html += '<li class="list-group-item">ยอดที่ถอดได้ '+web3.utils.fromWei(fee, 'ether')+' ETH</li>';
                         }
@@ -744,5 +744,13 @@ class FortuneWheel {
     getData(callback) {
       callback(Math.floor(Math.random() * 10));
     }
-  }
+}
 
+function getFee() {
+    Swal.fire(
+        'รับดอกเบี้ยการฝาก?',
+        'Comeing soon',
+        'question'
+    )
+    return;
+}
