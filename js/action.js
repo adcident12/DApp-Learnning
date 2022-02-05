@@ -232,11 +232,9 @@ async function getDataUser() {
             _html += '</div>';
         _html += '</div>';
     
-        if (userAddress != null) {
-            document.getElementById("user-detail").innerHTML = _html;
-            if (owner != account[0]) {
-                const wheel = new FortuneWheel(`[data-wheel]`, 10);
-            }
+        document.getElementById("user-detail").innerHTML = _html;
+        if (owner != account[0]) {
+            const wheel = new FortuneWheel(`[data-wheel]`, 10);
         }
     } else {
         document.getElementById("user-detail").innerHTML = "";
