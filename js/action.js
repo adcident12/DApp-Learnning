@@ -14,8 +14,8 @@ window.onload = async () => {
         if (networkId != 4) {
             Swal.fire({
                 icon: 'error',
-                title: 'Oops...',
-                text: 'change to Rinkeby Test Network',
+                title: 'ผิดพลาด',
+                text: 'เปลี่ยน network ใน metamask เป็น Rinkeby Test Network',
             });
             return false;
         }
