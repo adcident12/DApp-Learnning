@@ -219,6 +219,7 @@ async function getDataUser() {
                                     _html += '<div class="image" data-wheel-image="data-wheel-image"><span class="reward">0<span></div>';
                                 _html += '</div>';
                             _html += '</div>';
+                            _html += '<div class="bar-bottom badge badge-warning">เสีย AKT ครั้งละ 3906250000000 ต่อการหมุน</div>';
                         _html += '</div>';
                         }
                     _html += '</div>';
