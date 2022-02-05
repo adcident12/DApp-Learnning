@@ -749,7 +749,7 @@ class FortuneWheel {
 function getFee() {
     Swal.fire(
         'รับดอกเบี้ยการฝาก?',
-        'Comeing soon',
+        'Coming soon!',
         'question'
     )
     return;
