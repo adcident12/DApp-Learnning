@@ -131,3 +131,13 @@
     font: 15px Satisfy, cursive;
     line-height: 100%;
 }
+
+@media(max-width: 524px) {
+    .wheel {
+        width: 350px;
+        height: 350px;
+    }
+    .wheel .wheel-inner .image {
+        height: 150px;
+    }    
+}
