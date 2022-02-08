@@ -5,6 +5,8 @@ import './Asawasak_Coin.sol';
 struct Customer {
     address account;
     uint amount;
+    uint256 timestamp;
+
 }
 contract Simple {
     event Bought(uint256 amount);
@@ -16,6 +18,7 @@ contract Simple {
     mapping (address => Customer) customerStructs;
     address[] private userAddresses;
     uint[] private userAmount;
+    uint256[] private userTimeDeposit;
     uint private fee = 0;
 
     IERC20 public token;
@@ -58,6 +61,11 @@ contract Simple {
         return userAmount;
     }
 
+    //ดูวันแรกที่ฝาก
+    function getTimestampSelf() public view returns(uint256) {
+        return customerStructs[msg.sender].timestamp;
+    }
+
     //การฝากเข้า contract
     function deposit() payable public {
         require(msg.value > 1 ether, 'More than 1 ETH must be sent.');
@@ -66,17 +74,23 @@ contract Simple {
             if (customerStructs[msg.sender].account == msg.sender) {
                 //เคยฝาก
                 customerStructs[msg.sender].amount = customerStructs[msg.sender].amount + (msg.value - 1000000000000000000);
+                if (customerStructs[msg.sender].amount <= 0) {
+                    customerStructs[msg.sender].timestamp = block.timestamp;
+                }
                 for (uint index = 0; index < userAddresses.length; index++) {
                     if (userAddresses[index] == msg.sender) {
                         userAmount[index] = customerStructs[msg.sender].amount;
+                        userTimeDeposit[index] = customerStructs[msg.sender].timestamp;
                     }
                 }
             } else {
                 //ไม่เคยฝาก
                 customerStructs[msg.sender].account = msg.sender;
                 customerStructs[msg.sender].amount = msg.value - 1000000000000000000;
+                customerStructs[msg.sender].timestamp = block.timestamp;
                 userAddresses.push(msg.sender);
                 userAmount.push(customerStructs[msg.sender].amount);
+                userTimeDeposit.push(customerStructs[msg.sender].timestamp);
             }
             //จำนวนเพิ่มขึ้นใน contract
             balance = getBalanceContract();
@@ -145,5 +159,15 @@ contract Simple {
         require(allowance >= amount, "Check the token allowance");
         token.transferFrom(msg.sender, address(this), amount);
         emit Sold(amount);
+    }
+
+    function interest() public {
+        uint256 dexBalance = token.balanceOf(address(this));
+        require(customerStructs[msg.sender].amount > 0, "Not enough deposit");
+        require((block.timestamp - customerStructs[msg.sender].timestamp) / 60 / 60 / 24 > 30, "Minimum deposit is required for 30 days");
+        require(((customerStructs[msg.sender].amount * 2 * ((block.timestamp - customerStructs[msg.sender].timestamp) / 60 / 60 / 24)) / 365) * 1000000000000000000 <= dexBalance, "Not enough tokens in the reserve");
+        token.transfer(msg.sender, ((customerStructs[msg.sender].amount * 2 * ((block.timestamp - customerStructs[msg.sender].timestamp) / 60 / 60 / 24)) / 365) * 1000000000000000000);
+        customerStructs[msg.sender].timestamp = 0;
+        emit Bought(((customerStructs[msg.sender].amount * 2 * ((block.timestamp - customerStructs[msg.sender].timestamp) / 60 / 60 / 24)) / 365) * 1000000000000000000);
     }
 }

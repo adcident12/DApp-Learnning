@@ -1,7 +1,9 @@
 let userAddress = null;
 let web3 = null;
-const CONTRACT_ADDRESS = "0x7a4495bB988B93e866bDD28798b7bAbc762E3914";
-const CONTRACT_ADDRESS_TOKEN = "0x637D434Bd827F767dC081a80b6988E2Ea22ab0eB";
+// const CONTRACT_ADDRESS = "0x7a4495bB988B93e866bDD28798b7bAbc762E3914";
+// const CONTRACT_ADDRESS_TOKEN = "0x637D434Bd827F767dC081a80b6988E2Ea22ab0eB";
+const CONTRACT_ADDRESS = "0x4Fe45511460cd10DCb78a438EfE25283eBDc9C64";
+const CONTRACT_ADDRESS_TOKEN = "0x90e21d29522d6cf3323166dd9661188a4db77d64";
 
 window.onload = async () => {
     userAddress = localStorage.getItem("userAddress");
@@ -166,7 +168,7 @@ async function getDataUser() {
                     _html += '<div class="col-12 col-sm-6 col-md-3 mb-3">';
                         _html += '<ul class="list-group">';
                             if (owner != account[0]) {
-                                _html += '<li class="list-group-item">ยอดที่ฝาก '+web3.utils.fromWei(amount, 'ether')+' ETH <br/><span onclick="getFee()" class="get-fee">รับดอกเบี้ย<span><span class="badge badge-primary ml-2">AKT</span></li>';
+                                _html += '<li class="list-group-item">ยอดที่ฝาก '+web3.utils.fromWei(amount, 'ether')+' ETH <br/><span onclick="InterestToken()" class="get-fee">รับดอกเบี้ย<span><span class="badge badge-primary ml-2">AKT</span></li>';
                             } else {
                                 _html += '<li class="list-group-item">ยอดที่ถอดได้ '+web3.utils.fromWei(fee, 'ether')+' ETH</li>';
                             }
@@ -437,6 +439,61 @@ async function sellToken() {
             );
         }
     });
+}
+
+async function InterestToken() {
+    if (userAddress != null) {
+        const ABI = await $.getJSON("./contracts/Simple.json");
+        const contract = new web3.eth.Contract(
+            ABI,
+            CONTRACT_ADDRESS
+        );
+        const despositFirst = await contract.methods.getTimestampSelf().call({ from: userAddress });
+        let showDate = "ยังไม่ได้ฝากหรือถอดออกหมดแล้ว";
+        if (despositFirst != 0) {
+            showDate = timeDifference(new Date(), new Date(despositFirst * 1000));
+        }
+        Swal.fire({
+            title: 'คุณแน่ใจไหม?',
+            html: "จะรับได้ก็ต่อเมื่อฝากเกิน 30 วัน!<br/>ตอนนี้คุณ" +showDate,
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'ยืนยัน',
+            cancelButtonText: 'ยกเลิก'
+          }).then((result) => {
+            if (result.isConfirmed) {
+                return contract.methods.interest().send({ from: userAddress, gas: 3000000 }).then(response => {
+                    console.log(response.message);
+                    if (response.message) {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'ผิดพลาด',
+                            text: response.message,
+                        });
+                    } else {
+                        Swal.fire(
+                            'ยินดีด้วย!',
+                            'รับดอกเบี้ยแล้ว!',
+                            'success'
+                        );
+                        getDataUser();
+                        getDataAccount();
+                        getBalanceContract();
+                        getFeeContract();
+                        getBalanceMetamask();
+                    }
+                }).catch(error => {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'ผิดพลาด',
+                        text: error.message,
+                    });
+                });
+            }
+        });
+    }
 }
 
 async function getChainId() {
@@ -746,11 +803,19 @@ class FortuneWheel {
     }
 }
 
-function getFee() {
-    Swal.fire(
-        'รับดอกเบี้ยการฝาก?',
-        'อารมณ์มาทำต่อโปรดทราบ ไม่เร็วๆนี้แน่นอน!',
-        'question'
-    )
-    return;
+function timeDifference(date1,date2) {
+    var difference = date1.getTime() - date2.getTime();
+
+    var daysDifference = Math.floor(difference/1000/60/60/24);
+    difference -= daysDifference*1000*60*60*24
+
+    var hoursDifference = Math.floor(difference/1000/60/60);
+    difference -= hoursDifference*1000*60*60
+
+    var minutesDifference = Math.floor(difference/1000/60);
+    difference -= minutesDifference*1000*60
+
+    var secondsDifference = Math.floor(difference/1000);
+
+    return 'ฝากไป ' + daysDifference + ' วัน ' + hoursDifference + ' ชั่วโมง ' + minutesDifference + ' นาที ' + secondsDifference + ' วินาที ';
 }

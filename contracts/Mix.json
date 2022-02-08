@@ -125,6 +125,19 @@
         },
         {
             "inputs": [],
+            "name": "getTimestampSelf",
+            "outputs": [
+                {
+                    "internalType": "uint256",
+                    "name": "",
+                    "type": "uint256"
+                }
+            ],
+            "stateMutability": "view",
+            "type": "function"
+        },
+        {
+            "inputs": [],
             "name": "getfeeContranct",
             "outputs": [
                 {
@@ -134,6 +147,13 @@
                 }
             ],
             "stateMutability": "view",
+            "type": "function"
+        },
+        {
+            "inputs": [],
+            "name": "interest",
+            "outputs": [],
+            "stateMutability": "nonpayable",
             "type": "function"
         },
         {
