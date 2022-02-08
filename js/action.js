@@ -449,14 +449,20 @@ async function InterestToken() {
             CONTRACT_ADDRESS
         );
         const despositFirst = await contract.methods.getTimestampSelf().call({ from: userAddress });
-        let showDate = "ยังไม่ได้ฝากหรือถอดออกหมดแล้ว";
+        let showDateTxt = "ยังไม่ได้ฝากหรือถอดออกหมดแล้ว";
+        let statusBth = false;
         if (despositFirst != 0) {
-            showDate = timeDifference(new Date(), new Date(despositFirst * 1000));
+            let showDate = timeDifference(new Date(), new Date(despositFirst * 1000));
+            showDateTxt = showDate.text;
+            if (showDate.day > 30) {
+                statusBth = true;
+            }
         }
         Swal.fire({
             title: 'คุณแน่ใจไหม?',
-            html: "จะรับได้ก็ต่อเมื่อฝากเกิน 30 วัน!<br/>ตอนนี้คุณ" +showDate,
+            html: "จะรับได้ก็ต่อเมื่อฝากเกิน 30 วัน!<br/>ตอนนี้คุณ" +showDateTxt,
             icon: 'warning',
+            showConfirmButton: statusBth,
             showCancelButton: true,
             confirmButtonColor: '#3085d6',
             cancelButtonColor: '#d33',
@@ -817,5 +823,8 @@ function timeDifference(date1,date2) {
 
     var secondsDifference = Math.floor(difference/1000);
 
-    return 'ฝากไป ' + daysDifference + ' วัน ' + hoursDifference + ' ชั่วโมง ' + minutesDifference + ' นาที ' + secondsDifference + ' วินาที ';
+    return {
+        text : 'ฝากไป ' + daysDifference + ' วัน ' + hoursDifference + ' ชั่วโมง ' + minutesDifference + ' นาที ' + secondsDifference + ' วินาที ',
+        day : daysDifference
+    };
 }
